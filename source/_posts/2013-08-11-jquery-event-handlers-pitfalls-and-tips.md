@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  Jquery Event Handlers - Pitfalls and Tips
+date: 2013-08-11
 categories: [ development, jquery, javascript ]
 comments: true
 sharing: true

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Using pry with Padrino
+date: 2012-06-04
 categories: [ development, padrino, ruby ]
 comments: true
 sharing: true

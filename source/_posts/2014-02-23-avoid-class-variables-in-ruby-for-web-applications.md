@@ -3,6 +3,7 @@ layout: post
 title: 
 categories: [ development, ruby ]
 comments: true
+date: 2014-02-23
 sharing: true
 footer: true
 ---
