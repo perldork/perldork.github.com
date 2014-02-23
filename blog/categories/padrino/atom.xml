@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Padrino | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/padrino/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-23T17:53:33-05:00</updated>
+  <updated>2014-02-23T17:58:49-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Pry With Padrino]]></title>
-    <link href="http://perldork.github.io/blog/2013/06/04/using-pry-with-padrino/"/>
-    <updated>2013-06-04T00:00:00-04:00</updated>
-    <id>http://perldork.github.io/blog/2013/06/04/using-pry-with-padrino</id>
+    <link href="http://perldork.github.io/blog/2012/06/04/using-pry-with-padrino/"/>
+    <updated>2012-06-04T00:00:00-04:00</updated>
+    <id>http://perldork.github.io/blog/2012/06/04/using-pry-with-padrino</id>
     <content type="html"><![CDATA[<p>Pry is a really powerful replacement for IRB – I love using it with Rails. I recently started working with Padrino and of course had to have it working there as well.</p>
 
 <p>Pry will read and execute a .pryrc file that exists in the current directory as it boots – here is my Padrino specific .pryrc file – it boots your app just like you’d get in Rails using Pry:</p>
@@ -91,9 +91,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using Padrino Before and After Blocks in Rspec Tests]]></title>
-    <link href="http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/"/>
-    <updated>2013-02-05T00:00:00-05:00</updated>
-    <id>http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests</id>
+    <link href="http://perldork.github.io/blog/2012/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/"/>
+    <updated>2012-02-05T00:00:00-05:00</updated>
+    <id>http://perldork.github.io/blog/2012/02/05/using-padrino-before-and-after-blocks-in-rspec-tests</id>
     <content type="html"><![CDATA[<p>We add in code that allows us to send mock parameters to controller actions via Capybara tests for all controllers while testing -so we can simulate session state ( for example &ndash; user being logged in ). In Rails you do this by re-opening ApplicationController in spec/spec_helper.rb and adding in a before_filter. In Padrino you can do this by adding custom code to app.rb in a before block &ndash; the before block is called for every controller action.</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/app.rb </span></figcaption>
