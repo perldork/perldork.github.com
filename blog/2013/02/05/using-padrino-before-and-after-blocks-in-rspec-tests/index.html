@@ -1,0 +1,25 @@
+<p>We add in code that allows us to send mock parameters to controller actions via Capybara tests for all controllers while testing -so we can simulate session state ( for example &ndash; user being logged in ). In Rails you do this by re-opening ApplicationController in spec/spec_helper.rb and adding in a before_filter. In Padrino you can do this by adding custom code to app.rb in a before block &ndash; the before block is called for every controller action.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>configure :test do
+</span><span class='line'>  before do
+</span><span class='line'>    params.keys.each do |param|
+</span><span class='line'>      if param =~ /^mock_/
+</span><span class='line'>        mock_param = param.gsub(/mock_/, '') 
+</span><span class='line'>        session[ mock_param ] = params[ param ]
+</span><span class='line'>        logger.debug %{ #{mock_param} set to #{params[ param ]}} 
+</span><span class='line'>      end 
+</span><span class='line'>    end 
+</span><span class='line'>  end 
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
