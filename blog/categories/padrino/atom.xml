@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Padrino | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/padrino/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-23T17:30:46-05:00</updated>
+  <updated>2014-02-23T17:35:13-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Pry With Padrino]]></title>
+    <link href="http://perldork.github.io/blog/2013/06/04/using-pry-with-padrino/"/>
+    <updated>2013-06-04T00:00:00-04:00</updated>
+    <id>http://perldork.github.io/blog/2013/06/04/using-pry-with-padrino</id>
+    <content type="html"><![CDATA[<p>Pry is a really powerful replacement for IRB – I love using it with Rails. I recently started working with Padrino and of course had to have it working there as well.</p>
+
+<p>Pry will read and execute a .pryrc file that exists in the current directory as it boots – here is my Padrino specific .pryrc file – it boots your app just like you’d get in Rails using Pry:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>.pryrc </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">load</span> <span class="sx">%{./config/boot.rb}</span>
+</span><span class='line'><span class="nb">load</span> <span class="sx">%{./config/database.rb}</span>
+</span><span class='line'><span class="nb">load</span> <span class="sx">%{./config/apps.rb}</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;require &amp;lsquo;padrino-core/</span><span class="n">cli</span><span class="o">/</span><span class="n">console</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">adapter</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">base</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">rake</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">rake_tasks</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;def app</span>
+</span><span class='line'><span class="sr">  Padrino.application</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">start</span><span class="p">(</span> <span class="n">server</span> <span class="o">=</span> <span class="ss">:puma</span> <span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="sx">%{Type Ctrl-C to background server}</span>
+</span><span class='line'>  <span class="no">Padrino</span><span class="o">.</span><span class="n">run!</span> <span class="ss">server</span><span class="p">:</span> <span class="n">server</span>
+</span><span class='line'><span class="k">rescue</span> <span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="sx">%{Problem starting server: </span><span class="si">#{</span> <span class="n">e</span><span class="o">.</span><span class="n">to_s</span> <span class="si">}</span><span class="sx">}</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;def stop</span>
+</span><span class='line'><span class="sr">  puts %{Stopping server}</span>
+</span><span class='line'><span class="sr">  threads = Thread.list</span>
+</span><span class='line'><span class="sr">  threads.shift</span>
+</span><span class='line'><span class="sr">  threads.each { |t| Thread.kill t }</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">save_to</span><span class="p">(</span> <span class="n">file</span><span class="p">,</span> <span class="n">contents</span> <span class="p">)</span>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span> <span class="n">file</span><span class="p">,</span> <span class="sx">%{w}</span> <span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">puts</span> <span class="n">contents</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Padrino Before and After Blocks in Rspec Tests]]></title>
