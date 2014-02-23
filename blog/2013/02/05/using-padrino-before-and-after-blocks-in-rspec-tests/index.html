@@ -93,7 +93,8 @@
 
 <div class="entry-content"><p>We add in code that allows us to send mock parameters to controller actions via Capybara tests for all controllers while testing -so we can simulate session state ( for example &ndash; user being logged in ). In Rails you do this by re-opening ApplicationController in spec/spec_helper.rb and adding in a before_filter. In Padrino you can do this by adding custom code to app.rb in a before block &ndash; the before block is called for every controller action.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>title:app/app.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -104,17 +105,20 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>configure :test do
-</span><span class='line'>  before do
-</span><span class='line'>    params.keys.each do |param|
-</span><span class='line'>      if param =~ /^mock_/
-</span><span class='line'>        mock_param = param.gsub(/mock_/, '') 
-</span><span class='line'>        session[ mock_param ] = params[ param ]
-</span><span class='line'>        logger.debug %{ #{mock_param} set to #{params[ param ]}} 
-</span><span class='line'>      end 
-</span><span class='line'>    end 
-</span><span class='line'>  end 
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">configure</span> <span class="ss">:test</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">param</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">param</span> <span class="o">=~</span> <span class="sr">/^mock_/</span>
+</span><span class='line'>        <span class="n">mock_param</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/mock_/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">[</span> <span class="n">mock_param</span> <span class="o">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span> <span class="n">param</span> <span class="o">]</span>
+</span><span class='line'>        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="sx">%{ </span><span class="si">#{</span><span class="n">mock_param</span><span class="si">}</span><span class="sx"> set to </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span> <span class="n">param</span> <span class="o">]</span><span class="si">}</span><span class="sx">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
@@ -152,7 +156,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/" data-via="" data-counturl="http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/" data-via="perldork" data-counturl="http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
