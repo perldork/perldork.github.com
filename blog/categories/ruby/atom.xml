@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-23T17:29:00-05:00</updated>
+  <updated>2014-02-23T17:30:46-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -34,7 +34,7 @@ with a library that makes it easy to get and set data ( like <a href="https://gi
     <id>http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests</id>
     <content type="html"><![CDATA[<p>We add in code that allows us to send mock parameters to controller actions via Capybara tests for all controllers while testing -so we can simulate session state ( for example &ndash; user being logged in ). In Rails you do this by re-opening ApplicationController in spec/spec_helper.rb and adding in a before_filter. In Padrino you can do this by adding custom code to app.rb in a before block &ndash; the before block is called for every controller action.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>title:app/app.rb </span></figcaption>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/app.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
