@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Padrino | Semintelligent - Max Schubert]]></title>
+  <link href="http://perldork.github.io/blog/categories/padrino/atom.xml" rel="self"/>
+  <link href="http://perldork.github.io/"/>
+  <updated>2014-02-23T17:11:41-05:00</updated>
+  <id>http://perldork.github.io/</id>
+  <author>
+    <name><![CDATA[Max Schubert]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Using Padrino Before and After Blocks in Rspec Tests]]></title>
+    <link href="http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/"/>
+    <updated>2013-02-05T00:00:00-05:00</updated>
+    <id>http://perldork.github.io/blog/2013/02/05/using-padrino-before-and-after-blocks-in-rspec-tests</id>
+    <content type="html"><![CDATA[<p>We add in code that allows us to send mock parameters to controller actions via Capybara tests for all controllers while testing -so we can simulate session state ( for example &ndash; user being logged in ). In Rails you do this by re-opening ApplicationController in spec/spec_helper.rb and adding in a before_filter. In Padrino you can do this by adding custom code to app.rb in a before block &ndash; the before block is called for every controller action.</p>
+
+<p>```
+configure :test do
+  before do</p>
+
+<pre><code>params.keys.each do |param|
+  if param =~ /^mock_/
+    mock_param = param.gsub(/mock_/, '') 
+    session[ mock_param ] = params[ param ]
+    logger.debug %{ #{mock_param} set to #{params[ param ]}} 
+  end 
+end 
+</code></pre>
+
+<p>  end
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

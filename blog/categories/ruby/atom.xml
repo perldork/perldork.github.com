@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Development | Semintelligent - Max Schubert]]></title>
-  <link href="http://perldork.github.io/blog/categories/development/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Ruby | Semintelligent - Max Schubert]]></title>
+  <link href="http://perldork.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
   <updated>2014-02-23T17:11:41-05:00</updated>
   <id>http://perldork.github.io/</id>
@@ -24,19 +24,6 @@ apply to the instance of the application in which the variables are set.</p>
 
 <p>If you need to share data across instances of an application, consider using memcache or another host-level data storage mechanism
 with a library that makes it easy to get and set data ( like <a href="https://github.com/mperham/dalli">Dalli</a> for ruby ).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jquery Event Handlers - Pitfalls and Tips]]></title>
-    <link href="http://perldork.github.io/blog/2013/08/11/jquery-event-handlers-pitfalls-and-tips/"/>
-    <updated>2013-08-11T00:00:00-04:00</updated>
-    <id>http://perldork.github.io/blog/2013/08/11/jquery-event-handlers-pitfalls-and-tips</id>
-    <content type="html"><![CDATA[<p>Always return true or false at the end of the handler; true to allow additional events to fire, false to stop event propogation. If you do not oh boy will you get very strange behavior. For example, in recent Firefox releases you will get an error thrown with HTTP status 0 and message “Error,” yep, that is all you get.</p>
-
-<p>if you have mutiple elementa trigger the same event and the only difference is data ( for example a list of names where clicking posts the name ), write a handler based off of a CSS class selector. Do not create one handler per row or item using unique div IDs as the CSS selector – this eats browser memory quickly!</p>
-
-<p>Save jQuery elements in function scoped variablea and chain events from them – doing $( “selector” ) calls for the same element over and over again is expensive time and memory wise and slows your code down.</p>
 ]]></content>
   </entry>
   
