@@ -1,0 +1,13 @@
+---
+layout: page
+title: "categories"
+date: 2014-02-23 17:41
+comments: true
+sharing: true
+footer: true
+---
+%ul
+  {% for item in site.categories %}
+  %li
+    %a{ href: "/blog/categories/{{ item[0] }}/" }{{ item[0] | capitalize }} ( {{ item[1].size }} )
+  {% endfor %}
