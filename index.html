@@ -9,8 +9,9 @@
   <meta name="author" content="Max Schubert">
 
   
-  <meta name="description" content="Recently at my job our teams have grown to include a number of people
-who are not co-located with us. Here are some of the tools we&rsquo;ve been &hellip;">
+  <meta name="description" content="Most java developers have a really solid grasp of object-oriented
+concepts and patterns, which makes the transition to ruby easy really easy
+from &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +68,82 @@ who are not co-located with us. Here are some of the tools we&rsquo;ve been &hel
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/24/hints-and-advice-for-java-developers-new-to-ruby/">Hints and Tips for Java Developers New to Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-24T22:48:02-05:00" pubdate data-updated="true">Feb 24<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Most java developers have a really solid grasp of object-oriented
+concepts and patterns, which makes the transition to ruby easy really easy
+from that perspective.  Moving from a statically typed to dynamic
+language is still a big change and some of the more basic coding practices
+change significantly.  Here are some recommendations I&rsquo;ve come up with
+based on my experiences doing mentoring with a bunch of java developers
+transitioning to ruby on our team and some code patterns I&rsquo;ve heard used
+by a colleague of mine who is also mentoring some java developers who
+are transitioning to ruby.</p>
+
+<h3>Hints</h3>
+
+<ul>
+<li>Minimize the use of class variables &ndash; ruby&rsquo;s class variables have some
+strange inheritence rules, and, with multi-process web containers,
+they don&rsquo;t act as singletons across all instances of an app on the
+same server anyway.</li>
+<li>Prefer local variables over instance variables when possible.
+Minimizing the scope of a variable in a dynamic language reduces the
+possibility of bugs and makes it much easier to see where the variable
+is being set and used.</li>
+<li>Don&rsquo;t pre-initialize data structures &ndash; no need.  Arrays and hashes are
+dynamic and in the vast majority of circumstances pre-sizing them does
+not help performance and just leads to more noise in your code.</li>
+<li>Snake-case variables .. thing_one and thing_two.</li>
+<li>Semi-colons are not needed at the ends of statements ; only use them
+when doing single-line method definitions or rare cases where you want
+two statements on the same line.</li>
+<li>Prefer composition over complex inheritence trees.</li>
+<li>Prefer mixins over complex inheritence trees.</li>
+</ul>
+
+
+<h3>Tips</h3>
+
+<ul>
+<li>Explore code with irb or <a href="http://pryrepl.org/">Pry</a>. No faster way to
+get conversant with ruby than to explore using it from a ruby-based
+shell!</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -414,6 +491,10 @@ with a library that makes it easy to get and set data ( like <a href="https://gi
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/24/hints-and-advice-for-java-developers-new-to-ruby/">Hints and Tips for Java Developers New to Ruby</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/23/great-tools-for-distributed-teams/">Great Tools for Distributed Teams</a>
       </li>
     
@@ -427,10 +508,6 @@ with a library that makes it easy to get and set data ( like <a href="https://gi
     
       <li class="post">
         <a href="/blog/2012/06/04/using-pry-with-padrino/">Using Pry With Padrino</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/">Using Padrino Before and After Blocks in Rspec Tests</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Development | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/development/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-23T20:28:55-05:00</updated>
+  <updated>2014-02-24T23:09:38-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hints and Tips for Java Developers New to Ruby]]></title>
+    <link href="http://perldork.github.io/blog/2014/02/24/hints-and-advice-for-java-developers-new-to-ruby/"/>
+    <updated>2014-02-24T22:48:02-05:00</updated>
+    <id>http://perldork.github.io/blog/2014/02/24/hints-and-advice-for-java-developers-new-to-ruby</id>
+    <content type="html"><![CDATA[<p>Most java developers have a really solid grasp of object-oriented
+concepts and patterns, which makes the transition to ruby easy really easy
+from that perspective.  Moving from a statically typed to dynamic
+language is still a big change and some of the more basic coding practices
+change significantly.  Here are some recommendations I&rsquo;ve come up with
+based on my experiences doing mentoring with a bunch of java developers
+transitioning to ruby on our team and some code patterns I&rsquo;ve heard used
+by a colleague of mine who is also mentoring some java developers who
+are transitioning to ruby.</p>
+
+<h3>Hints</h3>
+
+<ul>
+<li>Minimize the use of class variables &ndash; ruby&rsquo;s class variables have some
+strange inheritence rules, and, with multi-process web containers,
+they don&rsquo;t act as singletons across all instances of an app on the
+same server anyway.</li>
+<li>Prefer local variables over instance variables when possible.
+Minimizing the scope of a variable in a dynamic language reduces the
+possibility of bugs and makes it much easier to see where the variable
+is being set and used.</li>
+<li>Don&rsquo;t pre-initialize data structures &ndash; no need.  Arrays and hashes are
+dynamic and in the vast majority of circumstances pre-sizing them does
+not help performance and just leads to more noise in your code.</li>
+<li>Snake-case variables .. thing_one and thing_two.</li>
+<li>Semi-colons are not needed at the ends of statements ; only use them
+when doing single-line method definitions or rare cases where you want
+two statements on the same line.</li>
+<li>Prefer composition over complex inheritence trees.</li>
+<li>Prefer mixins over complex inheritence trees.</li>
+</ul>
+
+
+<h3>Tips</h3>
+
+<ul>
+<li>Explore code with irb or <a href="http://pryrepl.org/">Pry</a>. No faster way to
+get conversant with ruby than to explore using it from a ruby-based
+shell!</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Great Tools for Distributed Teams]]></title>
@@ -166,46 +215,6 @@ with a library that makes it easy to get and set data ( like <a href="https://gi
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">save_to</span><span class="p">(</span> <span class="n">file</span><span class="p">,</span> <span class="n">contents</span> <span class="p">)</span>
 </span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span> <span class="n">file</span><span class="p">,</span> <span class="sx">%{w}</span> <span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">puts</span> <span class="n">contents</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using Padrino Before and After Blocks in Rspec Tests]]></title>
-    <link href="http://perldork.github.io/blog/2012/02/05/using-padrino-before-and-after-blocks-in-rspec-tests/"/>
-    <updated>2012-02-05T00:00:00-05:00</updated>
-    <id>http://perldork.github.io/blog/2012/02/05/using-padrino-before-and-after-blocks-in-rspec-tests</id>
-    <content type="html"><![CDATA[<p>We add in code that allows us to send mock parameters to controller actions via Capybara tests for all controllers while testing -so we can simulate session state ( for example &ndash; user being logged in ). In Rails you do this by re-opening ApplicationController in spec/spec_helper.rb and adding in a before_filter. In Padrino you can do this by adding custom code to app.rb in a before block &ndash; the before block is called for every controller action.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/app.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">configure</span> <span class="ss">:test</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">before</span> <span class="k">do</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;params.keys.each do |param|</span>
-</span><span class='line'><span class="sr">  if param =~ /</span><span class="o">^</span><span class="n">mock_</span><span class="o">/</span>
-</span><span class='line'>    <span class="n">mock_param</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/mock_/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">session</span><span class="o">[</span> <span class="n">mock_param</span> <span class="o">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span> <span class="n">param</span> <span class="o">]</span>
-</span><span class='line'>    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span> <span class="sx">%{ </span><span class="si">#{</span><span class="n">mock_param</span><span class="si">}</span><span class="sx"> set to </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span> <span class="n">param</span> <span class="o">]</span><span class="si">}</span><span class="sx">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
