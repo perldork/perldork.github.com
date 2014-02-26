@@ -4,7 +4,7 @@
   <title><![CDATA[Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-24T23:09:38-05:00</updated>
+  <updated>2014-02-25T23:40:00-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HOW-TO: Rack::Attack With Dalli and Padrino]]></title>
+    <link href="http://perldork.github.io/blog/2014/02/25/how-to-rack-attack-with-dalli-and-padrino/"/>
+    <updated>2014-02-25T23:24:42-05:00</updated>
+    <id>http://perldork.github.io/blog/2014/02/25/how-to-rack-attack-with-dalli-and-padrino</id>
+    <content type="html"><![CDATA[<p>We use <a href="https://github.com/mperham/dalli">Dalli</a> for memcached-based route caching with
+<a href="http://www.padrinorb.com/">Padrino</a> 0.12. I wanted to add rate throttling for all /api
+route handlers to our app and wanted to use Dalli for that as well.</p>
+
+<p>I found <a href="https://github.com/kickstarter/rack-attack">Rack::Attack</a>, a
+really nice Rack-based gem that allows for connection throttling,
+blacklisting and whitelisting of clients.  Cool stuff, perfect for our
+needs.  Except it expects the caching layer to conform to the
+ActiveSupport::Cache::Store interface:</p>
+
+<blockquote><p>Note that Rack::Attack.cache is only used for throttling; not<br/>blacklisting &amp; whitelisting. Your cache store must implement increment<br/>and write like ActiveSupport::Cache::Store.</p></blockquote>
+
+
+<p>Darn!  Oh, wait, not so bad.  But I don&rsquo;t want to have to do inline
+creation of the client etc in app/app.rb, especially because I&rsquo;m likely
+to have different throttling requirements for different environments.</p>
+
+<h3>Modules and blocks to the rescue!</h3>
+
+<ol>
+<li>Create a subclass for the Dalli client that conforms to the ActiveSupport API.</li>
+<li>Create a helper method that can be used inline in app/app.rb that
+takes a block with an environment-specific policy.</li>
+<li>Wrap the use and cache client creation so it doesn&rsquo;t have to be
+repeated in app/app.rb</li>
+</ol>
+
+
+<h5>Our security mixin module with configure_security helper</h5>
+
+<figure class='code'><figcaption><span>lib/security.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Security</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;dalli/client&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vc">@@store</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Dalli client does not conform to cache client</span>
+</span><span class='line'>  <span class="c1"># interface Rack::Attack expects - so add wrappers</span>
+</span><span class='line'>  <span class="c1"># for methods.</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">MemStore</span> <span class="o">&lt;</span> <span class="ss">Dalli</span><span class="p">:</span><span class="ss">:Client</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">decrement</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">options</span> <span class="p">)</span>
+</span><span class='line'>      <span class="n">decr</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">options</span><span class="o">[</span> <span class="ss">:expires_in</span> <span class="o">]</span> <span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">increment</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">options</span> <span class="p">)</span>
+</span><span class='line'>      <span class="n">incr</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">options</span><span class="o">[</span> <span class="ss">:expires_in</span> <span class="o">]</span><span class="p">,</span> <span class="kp">nil</span> <span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">options</span> <span class="p">)</span>
+</span><span class='line'>      <span class="c1"># Have to use raw =&gt; true for write or we get marshall</span>
+</span><span class='line'>      <span class="c1"># errors as Dalli marshals the Fixnum object instead of</span>
+</span><span class='line'>      <span class="c1"># sending the raw integer value</span>
+</span><span class='line'>      <span class="n">set</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">options</span><span class="o">[</span> <span class="ss">:expires_in</span> <span class="o">]</span><span class="p">,</span> <span class="ss">:raw</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize_store</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vc">@@store</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="n">use</span> <span class="ss">Rack</span><span class="p">:</span><span class="ss">:Attack</span>
+</span><span class='line'>      <span class="vc">@@store</span> <span class="o">=</span> <span class="ss">Rack</span><span class="p">:</span><span class="ss">:Attack</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="no">MemStore</span><span class="o">.</span><span class="n">new</span> <span class="sx">%{localhost:11211}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Called from app/app.rb</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">configure_security</span>
+</span><span class='line'>    <span class="n">initialize_store</span>
+</span><span class='line'>    <span class="k">yield</span><span class="p">(</span> <span class="ss">Rack</span><span class="p">:</span><span class="ss">:Attack</span> <span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>Now use it in app/app.rb</h5>
+
+<figure class='code'><figcaption><span>app/app.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">extend</span> <span class="no">Security</span> <span class="c1"># lib/security.rb - adds configure_security method</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">configure</span> <span class="ss">:demo</span><span class="p">,</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:api</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1"># Rate limit calls to /api URLs to 2 a second in all envs.</span>
+</span><span class='line'>      <span class="n">configure_security</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="n">throttle</span><span class="p">(</span><span class="s1">&#39;req/ip&#39;</span><span class="p">,</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="ss">:period</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+</span><span class='line'>          <span class="c1"># If we return false nothing is cached ( no rate limiting )</span>
+</span><span class='line'>          <span class="c1"># - only rate limit calls to /api URLs</span>
+</span><span class='line'>          <span class="n">req</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">index</span><span class="p">(</span> <span class="sx">%{/api}</span> <span class="p">)</span><span class="o">.</span><span class="n">nil?</span> <span class="p">?</span> <span class="kp">false</span> <span class="p">:</span> <span class="n">req</span><span class="o">.</span><span class="n">ip</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hints and Tips for Java Developers New to Ruby]]></title>
