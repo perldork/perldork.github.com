@@ -39,8 +39,14 @@
         <lastmod>2014-02-25T23:40:00-05:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://perldork.github.io/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian/
+        </loc>
+        <lastmod>2014-02-27T20:12:05-05:00</lastmod>
+    </url>
+    <url>
         <loc>http://perldork.github.io/blog/archives/</loc>
-        <lastmod>2014-02-25T23:40:00-05:00</lastmod>
+        <lastmod>2014-02-27T20:12:05-05:00</lastmod>
     </url>
     <url>
         <loc>http://perldork.github.io/blog/categories/</loc>
@@ -48,7 +54,7 @@
     </url>
     <url>
         <loc>http://perldork.github.io/</loc>
-        <lastmod>2014-02-25T23:40:00-05:00</lastmod>
+        <lastmod>2014-02-27T20:12:05-05:00</lastmod>
     </url>
     <url>
         <loc>http://perldork.github.io/robots.txt</loc>

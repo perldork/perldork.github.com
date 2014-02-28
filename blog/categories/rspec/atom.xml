@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rspec | Semintelligent - Max Schubert]]></title>
+  <link href="http://perldork.github.io/blog/categories/rspec/atom.xml" rel="self"/>
+  <link href="http://perldork.github.io/"/>
+  <updated>2014-02-27T20:12:06-05:00</updated>
+  <id>http://perldork.github.io/</id>
+  <author>
+    <name><![CDATA[Max Schubert]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[When Writing Rspec Tests 15 Pieces of Flair Is Perfect Just Ignore Brian]]></title>
+    <link href="http://perldork.github.io/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian/"/>
+    <updated>2014-02-27T19:59:49-05:00</updated>
+    <id>http://perldork.github.io/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian</id>
+    <content type="html"><![CDATA[<p><blockquote><p>Stan, Chotchkie&rsquo;s Manager: Now, you know it&rsquo;s up to you whether or not<br/>you want to just do the bare minimum. Or&hellip; well, like Brian, for<br/>example, has thirty seven pieces of flair, okay. And a terrific smile.</p><footer><strong>Office Space</strong></footer></blockquote></p>
+
+<p>Forget Brian, when it comes to writing rspec tests let your lazy come
+out.  Do the minimum.  Write a test that just does enough to prove
+hat your feature or component behaves as expected.</p>
+
+<h3>Do</h3>
+
+<ul>
+<li>Test all known user story / requirement business paths ( &ldquo;happy paths&rdquo; )
+related to the component or feature.</li>
+<li>Write a test that really exercises them with real data ( not mocks
+unless you have no other choice but to use mocks ).</li>
+<li>Write it so it both proves your code does what it is supposed to do
+and so that it teaches other developers looking at it how that part of
+the application or component should behave</li>
+</ul>
+
+
+<h3>Don&rsquo;t</h3>
+
+<ul>
+<li>Write a placeholder or filler test just so you can say you have test
+coverage</li>
+<li>Validate every single attribute or piece of data related to the test;
+that makes your test very tightly coupled to the implementation and
+means that any tiny change to the code requires the test to be updated
+as well.  This makes developers hate you and your overly high-maintenance tests.</li>
+<li>Be obscure nor clever.  Make the test direct and simple &ndash; the way we&rsquo;d
+all like our English to be!</li>
+<li>Use mocks unless you absolutely need to.  Why?  Mocks quickly become
+lies &ndash; if they are flexible enough to take made up method names they are
+likely to continue to take that made up method name even when the real
+implementation changes. Now your test lies to everyone when it says
+it passes because what it tests is something that is not used in the real
+implementation.  The only place I personally feel comfortable with
+mocks is when external network-based services are dependencies and
+having them reliably be available in development and test environments
+is not possible.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

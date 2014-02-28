@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Development | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/development/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-25T23:40:00-05:00</updated>
+  <updated>2014-02-27T20:12:06-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[When Writing Rspec Tests 15 Pieces of Flair Is Perfect Just Ignore Brian]]></title>
+    <link href="http://perldork.github.io/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian/"/>
+    <updated>2014-02-27T19:59:49-05:00</updated>
+    <id>http://perldork.github.io/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian</id>
+    <content type="html"><![CDATA[<p><blockquote><p>Stan, Chotchkie&rsquo;s Manager: Now, you know it&rsquo;s up to you whether or not<br/>you want to just do the bare minimum. Or&hellip; well, like Brian, for<br/>example, has thirty seven pieces of flair, okay. And a terrific smile.</p><footer><strong>Office Space</strong></footer></blockquote></p>
+
+<p>Forget Brian, when it comes to writing rspec tests let your lazy come
+out.  Do the minimum.  Write a test that just does enough to prove
+hat your feature or component behaves as expected.</p>
+
+<h3>Do</h3>
+
+<ul>
+<li>Test all known user story / requirement business paths ( &ldquo;happy paths&rdquo; )
+related to the component or feature.</li>
+<li>Write a test that really exercises them with real data ( not mocks
+unless you have no other choice but to use mocks ).</li>
+<li>Write it so it both proves your code does what it is supposed to do
+and so that it teaches other developers looking at it how that part of
+the application or component should behave</li>
+</ul>
+
+
+<h3>Don&rsquo;t</h3>
+
+<ul>
+<li>Write a placeholder or filler test just so you can say you have test
+coverage</li>
+<li>Validate every single attribute or piece of data related to the test;
+that makes your test very tightly coupled to the implementation and
+means that any tiny change to the code requires the test to be updated
+as well.  This makes developers hate you and your overly high-maintenance tests.</li>
+<li>Be obscure nor clever.  Make the test direct and simple &ndash; the way we&rsquo;d
+all like our English to be!</li>
+<li>Use mocks unless you absolutely need to.  Why?  Mocks quickly become
+lies &ndash; if they are flexible enough to take made up method names they are
+likely to continue to take that made up method name even when the real
+implementation changes. Now your test lies to everyone when it says
+it passes because what it tests is something that is not used in the real
+implementation.  The only place I personally feel comfortable with
+mocks is when external network-based services are dependencies and
+having them reliably be available in development and test environments
+is not possible.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HOW-TO: Rack::Attack With Dalli and Padrino]]></title>
@@ -314,19 +363,6 @@ apply to the instance of the application in which the variables are set.</p>
 
 <p>If you need to share data across instances of an application, consider using memcache or another host-level data storage mechanism
 with a library that makes it easy to get and set data ( like <a href="https://github.com/mperham/dalli">Dalli</a> for ruby ).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jquery Event Handlers - Pitfalls and Tips]]></title>
-    <link href="http://perldork.github.io/blog/2013/08/11/jquery-event-handlers-pitfalls-and-tips/"/>
-    <updated>2013-08-11T00:00:00-04:00</updated>
-    <id>http://perldork.github.io/blog/2013/08/11/jquery-event-handlers-pitfalls-and-tips</id>
-    <content type="html"><![CDATA[<p>Always return true or false at the end of the handler; true to allow additional events to fire, false to stop event propogation. If you do not oh boy will you get very strange behavior. For example, in recent Firefox releases you will get an error thrown with HTTP status 0 and message “Error,” yep, that is all you get.</p>
-
-<p>if you have mutiple elementa trigger the same event and the only difference is data ( for example a list of names where clicking posts the name ), write a handler based off of a CSS class selector. Do not create one handler per row or item using unique div IDs as the CSS selector – this eats browser memory quickly!</p>
-
-<p>Save jQuery elements in function scoped variablea and chain events from them – doing $( “selector” ) calls for the same element over and over again is expensive time and memory wise and slows your code down.</p>
 ]]></content>
   </entry>
   

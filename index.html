@@ -9,9 +9,7 @@
   <meta name="author" content="Max Schubert">
 
   
-  <meta name="description" content="We use Dalli for memcached-based route caching with
-Padrino 0.12. I wanted to add rate throttling for all /api
-route handlers to our app and wanted &hellip;">
+  <meta name="description" content="Stan, Chotchkie&#8217;s Manager: Now, you know it&#8217;s up to you whether or notyou want to just do the bare minimum. Or&#8230; well, like Brian, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +66,83 @@ route handlers to our app and wanted &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian/">When Writing Rspec Tests 15 Pieces of Flair Is Perfect Just Ignore Brian</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-27T19:59:49-05:00" pubdate data-updated="true">Feb 27<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>Stan, Chotchkie&#8217;s Manager: Now, you know it&#8217;s up to you whether or not<br/>you want to just do the bare minimum. Or&#8230; well, like Brian, for<br/>example, has thirty seven pieces of flair, okay. And a terrific smile.</p><footer><strong>Office Space</strong></footer></blockquote>
+
+
+<p>Forget Brian, when it comes to writing rspec tests let your lazy come
+out.  Do the minimum.  Write a test that just does enough to prove
+hat your feature or component behaves as expected.</p>
+
+<h3>Do</h3>
+
+<ul>
+<li>Test all known user story / requirement business paths ( &ldquo;happy paths&rdquo; )
+related to the component or feature.</li>
+<li>Write a test that really exercises them with real data ( not mocks
+unless you have no other choice but to use mocks ).</li>
+<li>Write it so it both proves your code does what it is supposed to do
+and so that it teaches other developers looking at it how that part of
+the application or component should behave</li>
+</ul>
+
+
+<h3>Don&rsquo;t</h3>
+
+<ul>
+<li>Write a placeholder or filler test just so you can say you have test
+coverage</li>
+<li>Validate every single attribute or piece of data related to the test;
+that makes your test very tightly coupled to the implementation and
+means that any tiny change to the code requires the test to be updated
+as well.  This makes developers hate you and your overly high-maintenance tests.</li>
+<li>Be obscure nor clever.  Make the test direct and simple &ndash; the way we&rsquo;d
+all like our English to be!</li>
+<li>Use mocks unless you absolutely need to.  Why?  Mocks quickly become
+lies &ndash; if they are flexible enough to take made up method names they are
+likely to continue to take that made up method name even when the real
+implementation changes. Now your test lies to everyone when it says
+it passes because what it tests is something that is not used in the real
+implementation.  The only place I personally feel comfortable with
+mocks is when external network-based services are dependencies and
+having them reliably be available in development and test environments
+is not possible.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -673,6 +748,10 @@ with a library that makes it easy to get and set data ( like <a href="https://gi
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/27/when-writing-rspec-tests-15-pieces-of-flair-is-perfect-just-ignore-brian/">When Writing Rspec Tests 15 Pieces of Flair Is Perfect Just Ignore Brian</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/25/how-to-rack-attack-with-dalli-and-padrino/">HOW-TO: Rack::Attack With Dalli and Padrino</a>
       </li>
     
@@ -686,10 +765,6 @@ with a library that makes it easy to get and set data ( like <a href="https://gi
     
       <li class="post">
         <a href="/blog/2014/02/23/avoid-class-variables-in-ruby-for-web-applications/">Avoid Class Variables in Ruby for Web Applications</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/11/jquery-event-handlers-pitfalls-and-tips/">Jquery Event Handlers - Pitfalls and Tips</a>
       </li>
     
   </ul>
