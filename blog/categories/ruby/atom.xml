@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-27T20:12:06-05:00</updated>
+  <updated>2014-02-27T20:15:10-05:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -22,7 +22,7 @@
 
 <p>Forget Brian, when it comes to writing rspec tests let your lazy come
 out.  Do the minimum.  Write a test that just does enough to prove
-hat your feature or component behaves as expected.</p>
+that your feature or component behaves as expected.</p>
 
 <h3>Do</h3>
 
