@@ -14,7 +14,7 @@ example, has thirty seven pieces of flair, okay. And a terrific smile.
 
 Forget Brian, when it comes to writing rspec tests let your lazy come
 out.  Do the minimum.  Write a test that just does enough to prove
-hat your feature or component behaves as expected.
+that your feature or component behaves as expected.
 
 ### Do
 
