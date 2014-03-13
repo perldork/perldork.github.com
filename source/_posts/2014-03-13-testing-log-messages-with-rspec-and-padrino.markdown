@@ -56,7 +56,7 @@ happened during the code run!
 
 {% codeblock lang:ruby spec/helpers/spec_helpers.rb %}
 
-it &quot;should test something&quot; do
+it "should test something" do
   messages = capture_logger_output do
     post %{/to/some/url}, params, set_csrf
   end
