@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-27T20:43:06-05:00</updated>
+  <updated>2014-03-13T16:09:01-04:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Log Messages With Rspec and Padrino]]></title>
+    <link href="http://perldork.github.io/blog/2014/03/13/testing-log-messages-with-rspec-and-padrino/"/>
+    <updated>2014-03-13T14:41:08-04:00</updated>
+    <id>http://perldork.github.io/blog/2014/03/13/testing-log-messages-with-rspec-and-padrino</id>
+    <content type="html"><![CDATA[<p>.
+<blockquote><p>And if you could could go ahead and get a can of psticide and take care<br/>of the roach problem we&rsquo;ve been having that would be great.</p><footer><strong>Office Space</strong></footer></blockquote></p>
+
+<p>While as a general rule testing log output can make tests brittle
+because logs are free text and can change easily, there are certainly
+cases where testing them makes sense.</p>
+
+<p>In my case our application was missing some really important business
+flow logging that we discovered was needed when we attempted to
+troubleshoot a production issue. We had to spend a significant amount of
+time hunting something down that would have been trivial to find in a
+well formatted info log message. I added that logging to the
+application and then wanted to make sure these business level log messages
+were being emitted at the right places in the application.</p>
+
+<p>To test log messages in Padrino, I added the following helper to our
+spec/support/spec_helpers.rb file:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>spec/helpers/spec_helpers.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Pass a block and log output will be captured in that block and&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">returned</span> <span class="n">as</span> <span class="n">an</span> <span class="n">array</span> <span class="n">of</span> <span class="n">lines</span> <span class="k">for</span> <span class="n">testing</span><span class="o">.</span><span class="n">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;def capture_logger_output</span>
+</span><span class='line'><span class="sr">  logger.flush</span>
+</span><span class='line'><span class="sr">  # This causes messages to be captured in the internal logger array</span>
+</span><span class='line'><span class="sr">  # that can be accessed via logger.buffer.</span>
+</span><span class='line'><span class="sr">  logger.auto_flush = false&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="c1"># Run user&amp;rsquo;s code</span>
+</span><span class='line'>  <span class="k">yield</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  # Save the log lines captured during the test block</span>
+</span><span class='line'><span class="sr">  # NOTE: have to clone otherwise flush clears the referred to array</span>
+</span><span class='line'><span class="sr">  buffer = logger.buffer.clone&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="n">logger</span><span class="o">.</span><span class="n">flush</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">.</span><span class="n">auto_flush</span> <span class="o">=</span> <span class="kp">true</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  buffer</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now in your tests you can run test code and capture any log messages that
+happened during the code run!</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>spec/helpers/spec_helpers.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;it &amp;ldquo;should test something&amp;rdquo; do</span>
+</span><span class='line'><span class="sr">  messages = capture_logger_output do&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">post</span> <span class="sx">%{/to/some/url}</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">set_csrf</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span> <span class="n">last_response</span><span class="o">.</span><span class="n">status</span> <span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="mi">200</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span> <span class="n">messages</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/general match/</span> <span class="p">}</span><span class="o">.</span><span class="n">first</span> <span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">match</span> <span class="sr">/specific-pattern/</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Happy log testing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[When Writing Rspec Tests 15 Pieces of Flair Is Perfect Just Ignore Brian]]></title>
@@ -308,82 +424,6 @@ apply to the instance of the application in which the variables are set.</p>
 
 <p>If you need to share data across instances of an application, consider using memcache or another host-level data storage mechanism
 with a library that makes it easy to get and set data ( like <a href="https://github.com/mperham/dalli">Dalli</a> for ruby ).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using Pry With Padrino]]></title>
-    <link href="http://perldork.github.io/blog/2012/06/04/using-pry-with-padrino/"/>
-    <updated>2012-06-04T00:00:00-04:00</updated>
-    <id>http://perldork.github.io/blog/2012/06/04/using-pry-with-padrino</id>
-    <content type="html"><![CDATA[<p>Pry is a really powerful replacement for IRB – I love using it with Rails. I recently started working with Padrino and of course had to have it working there as well.</p>
-
-<p>Pry will read and execute a .pryrc file that exists in the current directory as it boots – here is my Padrino specific .pryrc file – it boots your app just like you’d get in Rails using Pry:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>.pryrc </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">load</span> <span class="sx">%{./config/boot.rb}</span>
-</span><span class='line'><span class="nb">load</span> <span class="sx">%{./config/database.rb}</span>
-</span><span class='line'><span class="nb">load</span> <span class="sx">%{./config/apps.rb}</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;require &amp;lsquo;padrino-core/</span><span class="n">cli</span><span class="o">/</span><span class="n">console</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">adapter</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">base</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">rake</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">padrino</span><span class="o">-</span><span class="n">core</span><span class="o">/</span><span class="n">cli</span><span class="o">/</span><span class="n">rake_tasks</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;def app</span>
-</span><span class='line'><span class="sr">  Padrino.application</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">start</span><span class="p">(</span> <span class="n">server</span> <span class="o">=</span> <span class="ss">:puma</span> <span class="p">)</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="sx">%{Type Ctrl-C to background server}</span>
-</span><span class='line'>  <span class="no">Padrino</span><span class="o">.</span><span class="n">run!</span> <span class="ss">server</span><span class="p">:</span> <span class="n">server</span>
-</span><span class='line'><span class="k">rescue</span> <span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">e</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="sx">%{Problem starting server: </span><span class="si">#{</span> <span class="n">e</span><span class="o">.</span><span class="n">to_s</span> <span class="si">}</span><span class="sx">}</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;def stop</span>
-</span><span class='line'><span class="sr">  puts %{Stopping server}</span>
-</span><span class='line'><span class="sr">  threads = Thread.list</span>
-</span><span class='line'><span class="sr">  threads.shift</span>
-</span><span class='line'><span class="sr">  threads.each { |t| Thread.kill t }</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">save_to</span><span class="p">(</span> <span class="n">file</span><span class="p">,</span> <span class="n">contents</span> <span class="p">)</span>
-</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span> <span class="n">file</span><span class="p">,</span> <span class="sx">%{w}</span> <span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">puts</span> <span class="n">contents</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   

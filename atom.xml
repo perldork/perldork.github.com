@@ -4,7 +4,7 @@
   <title><![CDATA[Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-02-27T20:43:06-05:00</updated>
+  <updated>2014-03-13T16:09:01-04:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Log Messages With Rspec and Padrino]]></title>
+    <link href="http://perldork.github.io/blog/2014/03/13/testing-log-messages-with-rspec-and-padrino/"/>
+    <updated>2014-03-13T14:41:08-04:00</updated>
+    <id>http://perldork.github.io/blog/2014/03/13/testing-log-messages-with-rspec-and-padrino</id>
+    <content type="html"><![CDATA[<p>.</p>
+
+<blockquote><p>And if you could could go ahead and get a can of psticide and take care <br/>of the roach problem we&#8217;ve been having that would be great.</p><footer><strong>Office Space</strong></footer></blockquote>
+
+
+<p>While as a general rule testing log output can make tests brittle
+because logs are free text and can change easily, there are certainly
+cases where testing them makes sense.</p>
+
+<p>In my case our application was missing some really important business
+flow logging that we discovered was needed when we attempted to
+troubleshoot a production issue. We had to spend a significant amount of
+time hunting something down that would have been trivial to find in a
+well formatted info log message. I added that logging to the
+application and then wanted to make sure these business level log messages
+were being emitted at the right places in the application.</p>
+
+<p>To test log messages in Padrino, I added the following helper to our
+spec/support/spec_helpers.rb file:</p>
+
+<figure class='code'><figcaption><span>spec/helpers/spec_helpers.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Pass a block and log output will be captured in that block and</span>
+</span><span class='line'><span class="c1"># returned as an array of lines for testing.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">capture_logger_output</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">.</span><span class="n">flush</span>
+</span><span class='line'>  <span class="c1"># This causes messages to be captured in the internal logger array</span>
+</span><span class='line'>  <span class="c1"># that can be accessed via logger.buffer.</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">.</span><span class="n">auto_flush</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Run user&#39;s code</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Save the log lines captured during the test block</span>
+</span><span class='line'>  <span class="c1"># NOTE: have to clone otherwise flush clears the referred to array</span>
+</span><span class='line'>  <span class="n">buffer</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">clone</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">logger</span><span class="o">.</span><span class="n">flush</span>
+</span><span class='line'>  <span class="n">logger</span><span class="o">.</span><span class="n">auto_flush</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">buffer</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now in your tests you can run test code and capture any log messages that
+happened during the code run!</p>
+
+<figure class='code'><figcaption><span>spec/helpers/spec_helpers.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="n">should</span> <span class="nb">test</span> <span class="n">something</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">messages</span> <span class="o">=</span> <span class="n">capture_logger_output</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="sx">%{/to/some/url}</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">set_csrf</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span> <span class="n">last_response</span><span class="o">.</span><span class="n">status</span> <span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="mi">200</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span> <span class="n">messages</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/general match/</span> <span class="p">}</span><span class="o">.</span><span class="n">first</span> <span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">match</span> <span class="sr">/specific-pattern/</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Happy log testing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[When Writing Rspec Tests 15 Pieces of Flair Is Perfect Just Ignore Brian]]></title>
