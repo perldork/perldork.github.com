@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Padrino | Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/blog/categories/padrino/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-03-13T18:39:19-04:00</updated>
+  <updated>2014-03-15T14:00:40-04:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -19,7 +19,7 @@
     <updated>2014-03-13T14:41:08-04:00</updated>
     <id>http://perldork.github.io/blog/2014/03/13/testing-log-messages-with-rspec-and-padrino</id>
     <content type="html"><![CDATA[<p>.
-<blockquote><p>And if you could could go ahead and get a can of pesticide and take care<br/>of the roach problem we&rsquo;ve been having that would be great.</p><footer><strong>Office Space</strong></footer></blockquote></p>
+<blockquote><p>And if you could could go ahead and get a can of pesticide and take care<br/>of the roach problem we&rsquo;ve been having that would be great.</p><footer><strong>Bill Lumbergh</strong> <cite>Office Space</cite></footer></blockquote></p>
 
 <p>While as a general rule testing log output can make tests brittle
 because logs are free text and can change easily, there are certainly
