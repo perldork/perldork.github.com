@@ -15,7 +15,7 @@ While as a general rule testing log output can make tests brittle
 because logs are free text and can change easily, there are certainly
 cases where testing them makes sense.
 
-In my case our application was missing some really important business
+Our application was missing some really important business
 flow logging that we discovered was needed when we attempted to
 troubleshoot a production issue. We had to spend a significant amount of
 time hunting something down that would have been trivial to find in a
