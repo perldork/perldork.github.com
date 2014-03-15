@@ -6,8 +6,8 @@ comments: true
 categories: [ruby,padrino,rspec]
 ---
 .
-{% blockquote Office Space %}
-And if you could could go ahead and get a can of psticide and take care 
+{% blockquote Bill Lumbergh, Office Space %}
+And if you could could go ahead and get a can of pesticide and take care 
 of the roach problem we've been having that would be great.
 {% endblockquote %}
 
