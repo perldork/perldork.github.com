@@ -4,7 +4,7 @@
   <title><![CDATA[Semintelligent - Max Schubert]]></title>
   <link href="http://perldork.github.io/atom.xml" rel="self"/>
   <link href="http://perldork.github.io/"/>
-  <updated>2014-03-13T16:11:51-04:00</updated>
+  <updated>2014-03-13T18:39:19-04:00</updated>
   <id>http://perldork.github.io/</id>
   <author>
     <name><![CDATA[Max Schubert]]></name>
@@ -20,7 +20,7 @@
     <id>http://perldork.github.io/blog/2014/03/13/testing-log-messages-with-rspec-and-padrino</id>
     <content type="html"><![CDATA[<p>.</p>
 
-<blockquote><p>And if you could could go ahead and get a can of psticide and take care <br/>of the roach problem we&#8217;ve been having that would be great.</p><footer><strong>Office Space</strong></footer></blockquote>
+<blockquote><p>And if you could could go ahead and get a can of pesticide and take care <br/>of the roach problem we&#8217;ve been having that would be great.</p><footer><strong>Office Space</strong></footer></blockquote>
 
 
 <p>While as a general rule testing log output can make tests brittle
@@ -93,7 +93,7 @@ happened during the code run!</p>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="n">should</span> <span class="nb">test</span> <span class="n">something</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span> <span class="k">do</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="n">should</span> <span class="nb">test</span> <span class="n">something</span> <span class="k">do</span>
 </span><span class='line'>  <span class="n">messages</span> <span class="o">=</span> <span class="n">capture_logger_output</span> <span class="k">do</span>
 </span><span class='line'>    <span class="n">post</span> <span class="sx">%{/to/some/url}</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">set_csrf</span>
 </span><span class='line'>  <span class="k">end</span>
