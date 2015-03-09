@@ -1,6 +1,5 @@
 ---
 layout: post
-title: 
 categories: [ development, padrino, ruby ]
 date: 2012-02-05
 comments: true
