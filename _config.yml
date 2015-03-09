@@ -34,6 +34,9 @@ plugins: plugins
 code_dir: downloads/code
 category_dir: blog/categories
 markdown: rdiscount
+# Build settings
+highlighter: pygments
+permalink: pretty
 rdiscount:
   extensions:
     - autolink
