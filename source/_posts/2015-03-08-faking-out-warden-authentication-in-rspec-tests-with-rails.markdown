@@ -6,13 +6,18 @@ comments: true
 categories: [ development, rails, ruby ]
 ---
 
+{% blockquote Office Space %}
+Bob Porter: he [Milton] was laid off five years ago and no one ever told him about it; but through some kind of glitch in the payroll department, he still gets a paycheck.
+Bob Slydell: So we just went ahead and fixed the glitch.
+{% endblockquote %}
+
 Using real authentication for every controller or request test written
 with rspec / Capybara is a pain. We recently worked out how to fake out
-Warden authentication in Rails by allowing the user to pass in
-'mock\_user\_id' as an HTTP parameter to URLs and we then monkey path in
-a before method in our base controller in tests (only) that fakes out
-Warden authentication so we don't have to do real logins for each and
-every test.
+Warden authentication in Rails by monkey patching the Rails base
+application controller in the test environment to have a before filter
+that strips out the 'mock\_user\_id' parameter from the params hash and
+then uses that to look up the user object from our database and re-create
+the session variables Warden expects to see to validate that a user is logged in.
 
 {% codeblock lang:ruby spec/support/helpers/application_controller_monkeypatch.rb %}
 # this controller will only be used for tests to
