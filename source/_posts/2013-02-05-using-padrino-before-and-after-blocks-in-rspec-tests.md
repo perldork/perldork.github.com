@@ -13,11 +13,11 @@ configure :test do
   before do
     params.keys.each do |param|
       if param =~ /^mock_/
-        mock_param = param.gsub(/mock_/, '') 
+        mock_param = param.gsub(/mock_/, '')
         session[ mock_param ] = params[ param ]
         logger.debug %{ #{mock_param} set to #{params[ param ]}} 
-      end 
-    end 
-  end 
+      end
+    end
+  end
 end
 {% endcodeblock %}
